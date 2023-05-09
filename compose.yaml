@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  autoheal:
+      image: willfarrell/autoheal:latest
+      tty: true
+      restart: always
+      environment:
+        - AUTOHEAL_INTERVAL=60
+        - AUTOHEAL_START_PERIOD=300
+        - AUTOHEAL_DEFAULT_STOP_TIMEOUT=10
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+
+  ssh-proxy:
+    build: 
+      context: .
+    container_name: ssh-proxy
+    command: sh /app/connect.sh
+    ports:
+      - 1089:1089
+    healthcheck:
+      test: curl --fail -x socks5h://0.0.0.0:1089 ifconfig.io || exit 1
+      interval: 40s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+    environment:
+      - SSH_HOST=${SSH_HOST}
+      - SSH_PORT=${SSH_PORT}
+      - SSH_USER=${SSH_USER}
+      - SSH_PASSWORD=${SSH_PASSWORD}
+      - SOCKS5_PORT=1089
