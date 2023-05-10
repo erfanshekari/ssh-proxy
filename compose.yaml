@@ -13,8 +13,7 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock
 
   ssh-proxy:
-    build: 
-      context: .
+    image: erfanshekari/ssh-proxy:latest
     container_name: ssh-proxy
     command: sh /app/connect.sh
     ports:
