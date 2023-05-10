@@ -16,8 +16,10 @@ services:
     image: erfanshekari/ssh-proxy:latest
     container_name: ssh-proxy
     command: sh /app/connect.sh
+    restart: always
     ports:
-      - 1089:1089
+      - '1089:1089'
+      - '1089:1089/udp'
     healthcheck:
       test: curl --fail -x socks5h://0.0.0.0:1089 ifconfig.io || exit 1
       interval: 40s
