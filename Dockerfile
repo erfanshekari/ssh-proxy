@@ -1,9 +1,6 @@
 FROM alpine:3.17.3
 
-RUN apk update
-
-RUN apk add curl
-RUN apk add --update bash openssh sshpass
+RUN apk add --update curl bash openssh sshpass redsocks
 
 WORKDIR /app
 

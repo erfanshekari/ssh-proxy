@@ -6,4 +6,5 @@
       - SSH_PORT=${SSH_PORT}
       - SSH_USER=${SSH_USER}
       - SSH_PASSWORD=${SSH_PASSWORD}
+      - SSH_KEY=${SSH_KEY}
 ~~~
