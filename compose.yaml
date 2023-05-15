@@ -29,8 +29,8 @@ services:
       retries: 3
       start_period: 60s
     environment:
-      - SSH_HOST=18.141.172.144
-      - SSH_PORT=22
-      - SSH_USER=ubuntu
+      - SSH_HOST=${SSH_HOST}
+      - SSH_PORT=${SSH_PORT}
+      - SSH_USER=${SSH_USER}
       - SSH_KEY=/app/key.pem
       - SOCKS5_PORT=1089
