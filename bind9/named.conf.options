@@ -1,0 +1,6 @@
+options {
+        directory "/var/cache/bind";
+        allow-query { any; };
+        forwarders { 1.1.1.1; 8.8.8.8; };
+        recursion yes;  // allow recursive queries
+};

@@ -2,3 +2,4 @@ Dockerfile
 compose.yaml
 .env
 *.pem
+./bind9
