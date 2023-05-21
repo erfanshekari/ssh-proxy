@@ -31,6 +31,8 @@ services:
         ipv4_address: 10.17.0.2
     depends_on:
       - dns
+    volumes:
+      - ${SSH_KEY}:/app/key.pem
     healthcheck:
       test: curl --fail -x socks5h://localhost:1089 ifconfig.io || exit 1
       interval: 40s
