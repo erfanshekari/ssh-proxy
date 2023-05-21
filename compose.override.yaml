@@ -1,8 +1,11 @@
 version: "3.9"
 
 services:
+
   proxy:
     ports:
-      - '53:53/udp'
-      - '8080:8080'
       - '1089:1089'
+
+  dns:
+    ports:
+      - '5300:53/udp'

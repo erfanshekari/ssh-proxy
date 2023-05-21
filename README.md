@@ -1,15 +1,17 @@
 # UDP/TCP Tunnel Over OpenSSH
 The problem is that the OpenSSH connection itself does not support UDP, so it is not a good solution for VPN. But with the power of TProxy we can also send udp traffic which solves common problems related to DNS queries etc.
 
-This setup will provide you with v2ray and bind9 services which you can customize the configurations according to your needs.
+This setup will provide you with socks5 and bind9 services which you can customize the configurations according to your needs.
 Customize the ports in the compose.override.yaml file.
 ~~~yaml
 services:
   proxy:
     ports:
-      - '53:53/udp' # DNS Server (bind9)
-      - '8080:8080' # HTTP Proxy (v2ray)
-      - '1089:1089' # Socks5 Proxy (v2ray)
+      - '1089:1089' # Socks5 Proxy
+
+  dns:
+    ports:
+      - '5300:53/udp' # DNS Server (bind9)
 ~~~
 
 # How to Install

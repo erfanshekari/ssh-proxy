@@ -24,7 +24,27 @@ services:
   proxy:
     image: erfanshekari/ssh-proxy:latest
     container_name: proxy
-    command: sh /manage/start.sh
+    restart: always
+    command: sh /app/start.ssh.sh
+    networks:
+      network:
+        ipv4_address: 10.17.0.2
+    depends_on:
+      - dns
+    healthcheck:
+      test: curl --fail -x socks5h://localhost:1089 ifconfig.io || exit 1
+      interval: 40s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+    env_file:
+      - .env
+    
+
+  dns:
+    image: erfanshekari/ssh-dns:latest
+    container_name: dns
+    command: sh /manage/start.sshuttle.sh
     cap_add:
       - NET_ADMIN
       - NET_RAW
@@ -34,25 +54,10 @@ services:
       - ${SSH_KEY}:/app/key.pem
     networks:
       network:
-        ipv4_address: 10.17.0.2
+        ipv4_address: 10.17.0.3
     sysctls:
       - net.ipv6.conf.all.disable_ipv6=1
       - net.ipv6.conf.default.disable_ipv6=1
       - net.ipv6.conf.lo.disable_ipv6=1
-    healthcheck:
-      test: curl --fail ifconfig.io || exit 1
-      interval: 40s
-      timeout: 30s
-      retries: 3
-      start_period: 60s
     env_file:
       - .env
-
-  v2fly:
-    image: v2fly/v2fly-core:latest
-    container_name: v2fly
-    command: run -c /etc/v2fly/config.json
-    restart: always
-    network_mode: "service:proxy"
-    volumes:
-      - ./v2ray.config.json:/etc/v2fly/config.json

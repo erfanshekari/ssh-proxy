@@ -6,5 +6,5 @@ RUN apt-get install -y iptables python3 python3-pip openssh-client sshpass sshut
 
 WORKDIR /manage
 
-COPY ./start.sh ./start.sh
-RUN chmod +x start.sh
+COPY ./start.sshuttle.sh ./start.sshuttle.sh
+RUN chmod +x start.sshuttle.sh
