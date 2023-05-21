@@ -10,6 +10,7 @@ networks:
 
 services:
   autoheal:
+      container_name: healer
       image: willfarrell/autoheal:latest
       tty: true
       restart: always
@@ -20,41 +21,38 @@ services:
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock
 
-  dns:
-    build: 
-      context: ./bind9
-    container_name: bind
+  proxy:
+    image: erfanshekari/ssh-proxy:latest
+    container_name: proxy
+    command: sh /manage/start.sh
     cap_add:
       - NET_ADMIN
       - NET_RAW
-    ports:
-      - '53:53'
-      - '53:53/udp'
-    volumes:
-      - ./bind9:/etc/bind
-    networks:
-      network:
-        ipv4_address: 10.17.0.3
-
-  proxy:
-    build: 
-      context: .
-    container_name: proxy
-    command: sh /app/connect.sh
     restart: always
     volumes:
-      - ./key.pem:/app/key.pem
-    ports:
-      - '1089:1089'
-      - '1089:1089/udp'
+      - ./bind9:/etc/bind
+      - ${SSH_KEY}:/app/key.pem
     networks:
       network:
         ipv4_address: 10.17.0.2
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1
+      - net.ipv6.conf.default.disable_ipv6=1
+      - net.ipv6.conf.lo.disable_ipv6=1
     healthcheck:
-      test: curl --fail -x socks5h://0.0.0.0:1089 ifconfig.io || exit 1
+      test: curl --fail ifconfig.io || exit 1
       interval: 40s
       timeout: 30s
       retries: 3
       start_period: 60s
     env_file:
       - .env
+
+  v2fly:
+    image: v2fly/v2fly-core:latest
+    container_name: v2fly
+    command: run -c /etc/v2fly/config.json
+    restart: always
+    network_mode: "service:proxy"
+    volumes:
+      - ./v2ray.config.json:/etc/v2fly/config.json

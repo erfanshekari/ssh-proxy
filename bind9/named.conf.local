@@ -10,3 +10,8 @@ zone "example.com" IN {
         type master;
         file "/etc/bind/zones/example.com";
 };
+
+zone "erf.test" IN {
+        type master;
+        file "/etc/bind/zones/erf.test";
+};

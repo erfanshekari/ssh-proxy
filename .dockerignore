@@ -1,5 +1,9 @@
 Dockerfile
 compose.yaml
+compose.override.yaml
 .env
 *.pem
 ./bind9
+manage.sh
+v2ray.config.json
+README.md

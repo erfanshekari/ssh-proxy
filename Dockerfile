@@ -1,9 +1,10 @@
-FROM alpine:3.17.3
+FROM internetsystemsconsortium/bind9:9.19
 
-RUN apk add --update curl bash openssh sshpass redsocks
+RUN apt-get update
 
-WORKDIR /app
+RUN apt-get install -y iptables python3 python3-pip openssh-client sshpass sshuttle curl
 
-COPY . .
+WORKDIR /manage
 
-RUN chmod +x connect.sh
+COPY ./start.sh ./start.sh
+RUN chmod +x start.sh
