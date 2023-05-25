@@ -31,6 +31,10 @@ down_services() {
     docker compose down
 }
 
+build_images() {
+    docker compose build
+}
+
 
 case $1 in
     "install") install_requirements
@@ -38,5 +42,7 @@ case $1 in
     "up") up_services
     ;;
     "down") down_services
+    ;;
+    "build") build_images
     ;;
 esac

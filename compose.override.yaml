@@ -9,3 +9,7 @@ services:
   dns:
     ports:
       - '5300:53/udp'
+
+  redsocks:
+    ports:
+      - 4000:4000
