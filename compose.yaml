@@ -26,6 +26,8 @@ services:
     container_name: proxy
     restart: always
     command: sh /app/start.ssh.sh
+    expose:
+      - 1089
     networks:
       network:
         ipv4_address: 10.17.0.2
