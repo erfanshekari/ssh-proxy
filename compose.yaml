@@ -46,7 +46,8 @@ services:
     
 
   dns:
-    image: erfanshekari/ssh-dns:latest
+    build: 
+      context: .
     container_name: dns
     command: sh /manage/start.sshuttle.sh
     cap_add:
@@ -65,14 +66,9 @@ services:
       - net.ipv6.conf.lo.disable_ipv6=1
     env_file:
       - .env
-
-  redsocks:
-    image: erfanshekari/redsocks:latest
-    container_name: redsocks
-    command: redsocks -c /etc/redsocks.conf
-    restart: always
-    volumes:
-      - ./redsocks/redsocks.conf:/etc/redsocks.conf
-    networks:
-      network:
-        ipv4_address: 10.17.0.4
+    healthcheck:
+      test: host google.com 0.0.0.0 || exit 1
+      interval: 40s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
