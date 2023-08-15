@@ -46,8 +46,7 @@ services:
     
 
   dns:
-    build: 
-      context: .
+    image: erfanshekari/dns-proxy:latest
     container_name: dns
     command: sh /manage/start.sshuttle.sh
     cap_add:
