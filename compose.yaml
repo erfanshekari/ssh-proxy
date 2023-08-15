@@ -22,7 +22,8 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock
 
   proxy:
-    image: erfanshekari/ssh-proxy:latest
+    build:
+      context: ./socks
     container_name: proxy
     restart: always
     command: sh /app/start.ssh.sh
